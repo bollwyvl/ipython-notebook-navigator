@@ -39,39 +39,41 @@ You basically need to:
 - to that file, add a call to `require` to the IPython Notebook Navigator `.js` file
 
 Since we can safely assume you are using the IPython Notebook, here's a quick way to install it via the Notebook:
-  
-    import os
-    import IPython
-    from urllib import urlretrieve
-    from zipfile import ZipFile
-    
-    version = "0.0.0"
-    app_name = "ipython-notebook-navigator"
-    nav_url = "https://codeload.github.com/bollwyvl/%s/zip/v%s" % (app_name, version)
-    unzip_name = "%s-%s" % (app_name, version)
 
-    profile = IPython.utils.path.locate_profile()
-    custom = os.path.join(profile, "static", "custom")
-    ipynbnav = os.path.join(custom, "ipython-notebook-navigator")
+~~~~~python
+import os
+import IPython
+from urllib import urlretrieve
+from zipfile import ZipFile
 
-    if not os.path.exists(custom):
-        os.makedirs(custom)
+version = "0.0.0"
+app_name = "ipython-notebook-navigator"
+nav_url = "https://codeload.github.com/bollwyvl/%s/zip/v%s" % (app_name, version)
+unzip_name = "%s-%s" % (app_name, version)
 
-    with open(os.path.join(custom, "custom.js"), "a+") as custom_js:
-        custom_js.write('''
-    require(["custom/ipython-notebook-navigator/ipynbnav"], function(ipynbnav){
-      ipynbnav.init();
-    });
-    ''')
+profile = IPython.utils.path.locate_profile()
+custom = os.path.join(profile, "static", "custom")
+ipynbnav = os.path.join(custom, "ipython-notebook-navigator")
 
-    zip_path, success = urlretrieve(nav_url, os.path.join(custom, "nav.zip"))
+if not os.path.exists(custom):
+    os.makedirs(custom)
 
-    with ZipFile(zip_path, "r") as nav_zip:
-        nav_zip.extractall(custom)
+with open(os.path.join(custom, "custom.js"), "a+") as custom_js:
+    custom_js.write('''
+require(["custom/ipython-notebook-navigator/ipynbnav"], function(ipynbnav){
+  ipynbnav.init();
+});
+''')
 
-    os.rename(os.path.join(custom, unzip_name), ipynbnav)
+zip_path, success = urlretrieve(nav_url, os.path.join(custom, "nav.zip"))
 
-    os.unlink(zip_path)
+with ZipFile(zip_path, "r") as nav_zip:
+    nav_zip.extractall(custom)
+
+os.rename(os.path.join(custom, unzip_name), ipynbnav)
+
+os.unlink(zip_path)
+~~~~~
 
 ## License
 This script is licensed under the [BSD 3-Clause License](LICENSE.txt).
