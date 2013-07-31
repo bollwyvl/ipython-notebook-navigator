@@ -3,7 +3,7 @@ This is a standalone navigation enhancement for the IPython (>1.0) HTML
 Notebook.
 
 ## Screenshot
-Coming Soon
+<img src="screenshot.png"/>
 
 ## Features
 - Thumbnails of input/output cells, scaled to their relative size in the notebook
@@ -44,9 +44,15 @@ Since we can safely assume you are using the IPython Notebook, here's a quick wa
     import IPython
     from urllib import urlretrieve
     from zipfile import ZipFile
+    
+    version = "0.0.0"
+    app_name = "ipython-notebook-navigator"
+    nav_url = "https://codeload.github.com/bollwyvl/%s/zip/v%s" % (app_name, version)
+    unzip_name = "%s-%s" % (app_name, version)
 
     profile = IPython.utils.path.locate_profile()
     custom = os.path.join(profile, "static", "custom")
+    ipynbnav = os.path.join(custom, "ipython-notebook-navigator")
 
     if not os.path.exists(custom):
         os.makedirs(custom)
@@ -58,14 +64,14 @@ Since we can safely assume you are using the IPython Notebook, here's a quick wa
     });
     ''')
 
-    nav_url = "https://github.com/bollwyvl/ipython-notebook-navigator/"
-
     zip_path, success = urlretrieve(nav_url, os.path.join(custom, "nav.zip"))
 
     with ZipFile(zip_path, "r") as nav_zip:
         nav_zip.extractall(custom)
 
-    os.path.unlink(zip_path)
+    os.rename(os.path.join(custom, unzip_name), ipynbnav)
+
+    os.unlink(zip_path)
 
 ## License
 This script is licensed under the [BSD 3-Clause License](LICENSE.txt).
